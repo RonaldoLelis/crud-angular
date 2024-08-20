@@ -18,61 +18,12 @@
       </div>
     </mat-toolbar>
 
-    <div class="loading" *ngIf="courses$ | async as courses; else loading">
-
-    <table mat-table [dataSource]="courses" class="mat-elevation-z8">
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Curso </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.name }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef> Categoria </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.category }}
-          <mat-icon aria-hidden="false" aria-label="Categoria do Curso">
-            {{  element.category | categoryPipe }}
-          </mat-icon>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Ações </th>
-        <td mat-cell *matCellDef="let element">
-          <div class="courses-button-group">
-            <button
-              mat-mini-fab
-              (click)="onEdit(element)"
-              color="primary"
-              aria-label="Editar curso">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-mini-fab
-              (click)="onDelete(element)"
-              color="warn"
-              aria-label="Deletar curso">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    </div>
-
-    <!-- <app-courses-list
-      *ngIf="courses$ | async as courses; loading"
+    <app-courses-list
+      *ngIf="courses$ | async as courses; else loading"
       [courses]="courses"
       (edit)="onEdit($event)"
       (delete)="onDelete($event)">
-    </app-courses-list> -->
+    </app-courses-list>
 
     <ng-template #loading>
       <div class="load-spinner">

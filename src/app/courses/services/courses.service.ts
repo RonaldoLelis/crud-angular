@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { delay, first } from 'rxjs/operators';
 
 import { CourseModel } from './../models/course';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,13 @@ import { CourseModel } from './../models/course';
 export class CoursesService {
 
   private readonly apiURL: string = 'api/courses';
-  private readonly api = '/assets/courses.json';
 
   constructor(private httpClient: HttpClient ) { }
 
   getCourses() {
-    return this.httpClient.get<CourseModel[]>(this.api).pipe(
+    return this.httpClient.get<CourseModel[]>(this.apiURL).pipe(
       first(),
-      delay(3000),
+      delay(1000),
     );
     // return this.httpClient.get<CourseModel[]>(this.apiURL).pipe(first());
   }
@@ -35,7 +35,7 @@ export class CoursesService {
     return this.httpClient.delete(`${this.apiURL}/${id}`).pipe(first());
   }
 
-  private create(course: CourseModel) {
+  private create(course: Partial<CourseModel>) {
     return this.httpClient.post<CourseModel>(this.apiURL, course).pipe(first());
   }
 

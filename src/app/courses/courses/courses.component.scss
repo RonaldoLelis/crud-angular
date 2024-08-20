@@ -1,7 +1,3 @@
-table {
-  width: 100%;
-}
-
 .secondary {
   background-color: #B2DFDB;
 }
@@ -28,14 +24,6 @@ table {
   gap: 10px;
   align-items: center;
   margin-right: 20px;
-}
-
-.courses-button-group {
-  display: flex;
-  align-items: center;
-  button {
-    margin-right: 10px;
-  }
 }
 
 .load-spinner {
