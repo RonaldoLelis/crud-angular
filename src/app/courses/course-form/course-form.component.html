@@ -10,9 +10,9 @@
               matInput
               formControlName="name"
               placeholder="Digite o nome do curso">
-              <mat-error *ngIf="form.get('name')?.invalid">
-                {{ getErrorMessage('name') }}
-              </mat-error>
+            <mat-error *ngIf="form.get('name')?.invalid">
+              {{ getErrorMessage('name') }}
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
@@ -32,7 +32,8 @@
           class="button-add"
           (click)="onSubmit()"
           mat-raised-button
-          color="primary">
+          color="primary"
+          [disabled]="form.invalid">
           {{ isEdit ? 'Editar' : 'Adicionar' }}
         </button>
         <button

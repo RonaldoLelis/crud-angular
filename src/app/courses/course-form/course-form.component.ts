@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CoursesService } from '../services/courses.service';
-import { CourseModel } from '../models/course';
 
 @Component({
   selector: 'app-course-form',
@@ -31,18 +30,19 @@ export class CourseFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const course: CourseModel = this.route.snapshot.data['course'];
-    console.log('course: ', course);
-    if(course?._id) {
-      this.form.setValue({
-        _id: course._id,
-        name: course.name,
-        category: course.category
-      });
-      this.isEdit = true;
-    } else {
-      this.isEdit = false;
-    }
+    this.route.params.subscribe(async params => {
+      console.log('params: ', params);
+      if(Object.entries(params).length > 0) {
+        this.form.setValue({
+          _id: params['_id'],
+          name: params['name'],
+          category: params['category']
+        });
+        this.isEdit = true;
+      } else {
+        this.isEdit = false;
+      }
+    });
   }
 
   onSubmit() {
@@ -69,7 +69,7 @@ export class CourseFormComponent implements OnInit {
     const fieldName = this.form.get(field);
     if(fieldName?.hasError('required')) return 'Campo obrigatório';
     if(fieldName?.hasError('minlength')) {
-      const requiredLength = fieldName.errors ? fieldName.errors['minlength']['requiredLength'] : 5;
+      const requiredLength = fieldName.errors ? fieldName.errors['minlength']['requiredLength'] : 3;
       return `Campo deve ter no mínimo ${requiredLength} caracteres`;
     }
     return '';

@@ -1,15 +1,15 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ErrorDialogComponent } from './../../shared/components/error-dialog/error-dialog.component';
 import { CoursesService } from '../services/courses.service';
-import { catchError, debounceTime, take } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { CourseModel } from '../models/course';
-// import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from './../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -18,8 +18,6 @@ import { CourseModel } from '../models/course';
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
-
-  // public courses: CourseModel[] = [];
 
   courses$!: Observable<CourseModel[]>;
   readonly displayedColumns = ['name', 'category', 'actions'];
@@ -52,22 +50,25 @@ export class CoursesComponent implements OnInit {
   }
 
   onEdit(course: CourseModel) {
-    this.router.navigate(['edit', course._id], { relativeTo: this.route });
+    this.router.navigate(['edit', course._id, course], { relativeTo: this.route });
   }
 
   onDelete(course: CourseModel) {
-    // const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-    //   data: 'Tem certeza que deseja remover esse curso?',
-    // });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja remover esse curso?',
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if(result) {
-    //     this.coursesService.remove(course._id).subscribe(() => {
-    //       this.onRemoveSuccess();
-    //       this.refresh()
-    //     }, () => this.onError());
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.coursesService.remove(course._id).subscribe({
+          next: () => {
+            this.onRemoveSuccess();
+            this.refresh();
+          },
+          error: () => this.onError()
+        });
+      }
+    });
   }
 
   openDialog(errorMsg: string) {

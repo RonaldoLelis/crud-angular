@@ -22,7 +22,7 @@ export class CoursesService {
     // return this.httpClient.get<CourseModel[]>(this.apiURL).pipe(first());
   }
 
-  loadById(id: string) {
+  loadById(id: number) {
     return this.httpClient.get<CourseModel>(`${this.apiURL}/${id}`);
   }
 
@@ -31,7 +31,7 @@ export class CoursesService {
     else return this.create(course);
   }
 
-  remove(id: string) {
+  remove(id: number) {
     return this.httpClient.delete(`${this.apiURL}/${id}`).pipe(first());
   }
 
@@ -39,7 +39,7 @@ export class CoursesService {
     return this.httpClient.post<CourseModel>(this.apiURL, course).pipe(first());
   }
 
-  private update(course: CourseModel) {
+  private update(course: Partial<CourseModel>) {
     return this.httpClient.put<CourseModel>(`${this.apiURL}/${course._id}`, course).pipe(first());
   }
 
